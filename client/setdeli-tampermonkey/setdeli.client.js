@@ -65,7 +65,7 @@ function constructSetString(mon, set, meta) {
     }
 
     for (var x = 0; x < set.moveslots.length; x++) {
-        output += "- " + set.moveslots[x] + "\n";
+        output += "- " + set.moveslots[x][0] + "\n";
     }
 
     return output;
