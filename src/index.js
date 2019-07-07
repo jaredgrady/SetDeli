@@ -95,7 +95,7 @@ app.get('/sets/*/*/*', (req, res) => {
 		// Asynchronously scrap the Dex for all relevant sets and pack them
 		(async (gen, mon, meta) => {
 			try {
-				const result = await axios.get(`${smogon}${gen}/pokemon/${mon}/${meta}`);
+				const result = await axios.get(`${smogon}${gen}/pokemon/${mon}/${meta}`.replace("20", "_"));
 				const $ = cheerio.load(result.data);
 
 				let sets = JSON.parse(
@@ -103,7 +103,6 @@ app.get('/sets/*/*/*', (req, res) => {
 						['injectRpcs'][2][1]['strategies'][0]['movesets'];
 
 				updateCacheEntry(gen + mon + meta, sets);
-				console.log(sets);
 				res.status(201).json({'success': 201, 'data': sets});
 			} catch (error) {
 				res.status(404).json({'error': 404, 'data':null, 'message':`Unable to find ${gen} ${meta} sets for ${mon}`});
@@ -111,7 +110,6 @@ app.get('/sets/*/*/*', (req, res) => {
 			}
 		})(gen, mon, meta);
 	} else {
-		console.log(cacheResult);
 		res.status(201).json({'success': 201, 'data': cacheResult});
 	}
 });
