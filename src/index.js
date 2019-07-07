@@ -55,6 +55,12 @@ function updateCacheEntry(key, sets) {
 	cache[key] = {'sets': sets, 'updated': Date.now()};
 }
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 /**
  * Index route for the API. Shows liveness.
  * @return {string} Response text
@@ -93,6 +99,7 @@ app.get('/sets/*/*/*', (req, res) => {
 						['injectRpcs'][2][1]['strategies'][0]['movesets'];
 
 				updateCacheEntry(gen + mon + meta, sets);
+				console.log(sets);
 				res.status(201).json({'success': 201, 'data': sets});
 			} catch (error) {
 				res.status(404).json({'error': 404, 'data':null, 'message':`Unable to find ${gen} ${meta} sets for ${mon}`});
@@ -100,6 +107,7 @@ app.get('/sets/*/*/*', (req, res) => {
 			}
 		})(gen, mon, meta);
 	} else {
+		console.log(cacheResult);
 		res.status(201).json({'success': 201, 'data': cacheResult});
 	}
 });
