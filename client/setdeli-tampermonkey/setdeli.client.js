@@ -60,6 +60,10 @@ function constructSetString(mon, set, meta) {
         output += "\n";
     }
 
+    if (set.natures.length === 1) {
+        output += set.natures[0] + " Nature\n";
+    }
+
     for (var x = 0; x < set.moveslots.length; x++) {
         output += "- " + set.moveslots[x] + "\n";
     }

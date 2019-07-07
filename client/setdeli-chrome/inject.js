@@ -11,7 +11,7 @@ function constructSetString(mon, set, meta) {
     var output = upperFirst(mon);
     if (set.items.length = 1) output += " @ " + set.items[0];
     output += "\n";
-    console.log(meta);
+
     if (meta === 'lc') {
             output += "Level: " + 5 + "\n";
     } else {
@@ -49,6 +49,10 @@ function constructSetString(mon, set, meta) {
             output = output.substring(0, output.length - 2);
         }
         output += "\n";
+    }
+
+    if (set.natures.length === 1) {
+        output += set.natures[0] + " Nature\n";
     }
 
     for (var x = 0; x < set.moveslots.length; x++) {
