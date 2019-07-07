@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "API for Smogon Setdex",
   "main": "index.js",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "start": "node src/index.js",
     "test": "mocha",
