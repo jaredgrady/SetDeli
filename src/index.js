@@ -6,6 +6,7 @@
  */
 
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const port = process.env.PORT || 3000;
 const axios = require('axios');
@@ -54,6 +55,9 @@ function checkCache(key) {
 function updateCacheEntry(key, sets) {
 	cache[key] = {'sets': sets, 'updated': Date.now()};
 }
+
+// Middleware
+app.use(compression())
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
