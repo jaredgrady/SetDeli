@@ -12,7 +12,6 @@ const port = process.env.PORT || 3000;
 const axios = require('axios');
 const cheerio = require('cheerio');
 const smogon = "https://www.smogon.com/dex/";
-const fs = require('fs');
 
 let cache = {};
 
@@ -24,7 +23,7 @@ let cache = {};
 function toId(text) {
 	if (text && text.id) {
 		text = text.id;
-    } else if (text && text.userid) {
+	} else if (text && text.userid) {
 		text = text.userid;
 	}
 	if (typeof text !== 'string' && typeof text !== 'number') return '';
@@ -57,12 +56,12 @@ function updateCacheEntry(key, sets) {
 }
 
 // Middleware
-app.use(compression())
+app.use(compression());
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+app.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
 });
 
 /**
@@ -98,14 +97,12 @@ app.get('/sets/*/*/*', (req, res) => {
 				const result = await axios.get(`${smogon}${gen}/pokemon/${mon}/${meta}`.replace("20", "_"));
 				const $ = cheerio.load(result.data);
 
-				let sets = JSON.parse(
-					$('script').first().html().replace('dexSettings = ', ""))
-						['injectRpcs'][2][1]['strategies'][0]['movesets'];
+				let sets = JSON.parse($('script').first().html().replace('dexSettings = ', ""))['injectRpcs'][2][1]['strategies'][0]['movesets'];
 
 				updateCacheEntry(gen + mon + meta, sets);
 				res.status(201).json({'success': 201, 'data': sets});
 			} catch (error) {
-				res.status(404).json({'error': 404, 'data':null, 'message':`Unable to find ${gen} ${meta} sets for ${mon}`});
+				res.status(404).json({'error': 404, 'data': null, 'message': `Unable to find ${gen} ${meta} sets for ${mon}`});
 				return;
 			}
 		})(gen, mon, meta);
