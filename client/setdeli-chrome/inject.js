@@ -52,7 +52,7 @@ function constructSetString(mon, set, meta) {
         output += "\n";
     }
 
-    if (set.natures.length === 1) {
+    if (set.natures.length > 0) {
         output += set.natures[0] + " Nature\n";
     }
 

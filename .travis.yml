@@ -6,4 +6,4 @@ cache:
   directories:
     - node_modules
     - .eslintcache
-script: npm run test
+script: npm run lint
